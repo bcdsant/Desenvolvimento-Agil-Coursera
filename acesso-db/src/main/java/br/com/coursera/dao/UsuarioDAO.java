@@ -10,19 +10,21 @@ import java.util.List;
 import br.com.coursera.modelo.Usuario;
 
 public class UsuarioDAO {
+	
+	private static final String db_connection = ConnectionConfig.getDbConnection();
+	private static final String db_user = ConnectionConfig.getDbUser();
+	private static final String db_password = ConnectionConfig.getDbPassword();
 
 	static {
 		try {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public static void inserirUsuario(Usuario novoUsuario) {
-		try (Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/usuarios", "postgres",
-				"admin")) {
+		try (Connection c = DriverManager.getConnection(db_connection, db_user, db_password)) {
 
 			String sql = "INSERT INTO public.usuario (login, nome, email) VALUES (?, ?, ?)";
 			PreparedStatement stm = c.prepareStatement(sql);
